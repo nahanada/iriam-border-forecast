@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-H06M52BNZT"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-H06M52BNZT');
+  </script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IRIAMボーダー予測 - ランクボーダーの数日先予測</title>
+
+  <meta name="description" content="IRIAMのランクボーダーの今日から7日先までの予測を毎日更新。">
+  <link rel="canonical" href="https://nahanada.github.io/iriam-border-forecast/">
+
+  <!-- OGP -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="IRIAMボーダー予測">
+  <meta property="og:locale" content="ja_JP">
+  <meta property="og:title" content="IRIAMボーダー予測">
+  <meta property="og:description" content="IRIAMのランクボーダーの今日から7日先までの予測を毎日更新。">
+  <meta property="og:url" content="https://nahanada.github.io/iriam-border-forecast/">
+  <meta property="og:image" content="https://nahanada.github.io/iriam-border-forecast/assets/Kame-Shiro-Noir.jpg">
+  <meta property="og:image:alt" content="ソフトクリームをのせたカメのイラスト">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="IRIAMボーダー予測">
+  <meta name="twitter:description" content="IRIAMのランクボーダーの今日から7日先までの予測を毎日更新。">
+  <meta name="twitter:image" content="https://nahanada.github.io/iriam-border-forecast/assets/Kame-Shiro-Noir.jpg">
+  <meta name="twitter:image:alt" content="ソフトクリームをのせたカメのイラスト">
+
+  <!-- Favicon / Apple Touch Icon -->
+  <link rel="icon" href="assets/Kame-Shiro-Noir.jpg" type="image/jpeg">
+  <link rel="apple-touch-icon" href="assets/Kame-Shiro-Noir.jpg">
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#2792c3">
+  <meta name="application-name" content="IRIAMボーダー予測">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="ボーダー予測">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+  <header id="siteHeader">
+    <div class="header-top">
+      <h1 class="title">IRIAMボーダー予測</h1>
+      <button class="menu-btn" id="menuBtn" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="menuPanel">
+        <span class="arrow-icon down"></span>
+      </button>
+    </div>
+    <nav class="menu-bar" id="menuPanel" aria-label="ページ切り替え" aria-hidden="true">
+      <div class="menu-bar-inner">
+        <button type="button" class="menu-item active" data-page="0">予測</button>
+        <button type="button" class="menu-item" data-page="1">精度</button>
+        <button type="button" class="menu-item small" data-page="2">このサイトについて</button>
+      </div>
+    </nav>
+  </header>
+
+  <div class="slider-wrapper" id="sliderWrapper">
+    <div class="slider-container" id="sliderContainer">
+
+      <!-- ================= ページ1: 予測 ================= -->
+      <section class="slide-page" id="page0" aria-label="予報">
+        <p class="sub" id="updatedText">今日から1週間先までのランクボーダー予測</p>
+        <div class="notice" id="staleNotice" hidden></div>
+
+        <div class="container">
+          <div class="picker">
+            <div class="picker-label">ランク</div>
+            <div class="tier-grid" id="tierChips" role="group" aria-label="ランク"></div>
+            <div class="picker-label">上昇幅</div>
+            <div class="tier-grid" id="stepChips" role="group" aria-label="上昇幅">
+              <button type="button" class="tier-btn step-btn" data-step="2">+2</button>
+              <button type="button" class="tier-btn step-btn" data-step="4">+4</button>
+              <button type="button" class="tier-btn step-btn" data-step="6">+6</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="container" id="forecastCard">
+          <h2 class="card-title" id="fcTitle">—</h2>
+          <div class="stat-row" id="fcStats"></div>
+          <div class="chart" id="fcChart" aria-label="予測グラフ"></div>
+          <div class="legend">
+            <span><i class="lg lg-line"></i>予測</span>
+            <span><i class="lg lg-band"></i>80%の範囲</span>
+            <span><i class="lg lg-dot"></i>実測</span>
+            <span><i class="lg lg-est"></i>未登録の推定</span>
+          </div>
+          <div class="table-scroll">
+            <table class="data-table" id="fcTable"></table>
+          </div>
+          <p class="note" id="fcNote"></p>
+        </div>
+
+        <div class="container">
+          <h2 class="card-title" id="tierTitle">—</h2>
+          <div class="table-scroll">
+            <table class="data-table matrix" id="tierTable"></table>
+          </div>
+          <p class="note">行をタップすると上昇幅が切り替わります。</p>
+        </div>
+
+        <div class="container">
+          <h2 class="card-title" id="matrixTitle">ランク別の予測一覧</h2>
+          <div class="table-scroll">
+            <table class="data-table matrix" id="matrixTable"></table>
+          </div>
+          <p class="note">行をタップするとそのランクのグラフに切り替わります。</p>
+        </div>
+      </section>
+
+      <!-- ================= ページ2: 精度 ================= -->
+      <section class="slide-page" id="page1" aria-label="精度">
+        <p class="sub">過去の予測と、実際に登録されたボーダーの比較</p>
+
+        <div class="container">
+          <h2 class="card-title" id="cmpTitle">—</h2>
+          <div class="picker">
+            <div class="picker-label">いつ見た予測？</div>
+            <div class="tier-grid" id="horizonChips" role="group" aria-label="いつ見た予測か">
+              <button type="button" class="tier-btn step-btn" data-h="1">当日</button>
+              <button type="button" class="tier-btn step-btn" data-h="2">前日</button>
+              <button type="button" class="tier-btn step-btn" data-h="3">一昨日</button>
+            </div>
+            <p class="note left" id="horizonHelp"></p>
+          </div>
+          <div class="stat-row" id="cmpStats"></div>
+          <div class="chart" id="cmpChart" aria-label="予測と実績のグラフ"></div>
+          <div class="legend">
+            <span><i class="lg lg-line"></i>予測</span>
+            <span><i class="lg lg-dot"></i>実際のボーダー</span>
+          </div>
+          <div class="table-scroll">
+            <table class="data-table" id="cmpTable"></table>
+          </div>
+          <p class="note">ランクと上昇幅は「予測」ページで選んだものが使われます。実際の値は、なまずつーるずに登録されたものだけを表示しています。</p>
+        </div>
+
+        <div class="container">
+          <h2 class="card-title">全体の精度（直近<span id="accDays">90</span>日）</h2>
+          <div class="stat-row" id="accStats"></div>
+          <div class="table-scroll">
+            <table class="data-table" id="accTable"></table>
+          </div>
+          <p class="note">誤差は「予測と実際の差 ÷ 実際の値」の平均です。数字が小さいほど当たっています。</p>
+        </div>
+      </section>
+
+      <!-- ================= ページ3: このサイトについて ================= -->
+      <section class="slide-page" id="page2" aria-label="このサイトについて">
+        <p class="sub">予測のしくみと注意点</p>
+
+        <div class="container about">
+          <h2 class="card-title">このサイトについて</h2>
+          <p>IRIAMのランクボーダー（ランクと上昇幅の日ごとのボーダー）を、今日から1週間先まで予測して毎日更新しています。</p>
+
+          <h3>ボーダーとは</h3>
+          <ul>
+            <li>デイリーランクスコアは、同じグループのライバーがその日に獲得した<b>応援ポイントとの相対的な位置</b>で決まります。1つ目のボーダーを超えると+2、2つ目で+4、3つ目で+6です。</li>
+            <li>「S3 +2」は、S3のグループで+2を獲得するために必要な、その日の応援ポイントを表します。集計は0時〜23時59分の1日分です。</li>
+          </ul>
+
+          <h3>予測のしくみ</h3>
+          <ul>
+            <li>過去のボーダーから、<b>水準の推移・曜日・月初/月末・祝日</b>などのクセを機械学習（LightGBM）で学習し、毎日つくり直しています。</li>
+            <li>予測は目安です。直近の検証では、平均で約<span id="aboutMape">12</span>%ずれました。月曜日は上下に大きく振れやすく、他の曜日より外れやすくなります。</li>
+            <li>「80%の範囲」は、過去の予測の外れ方から作った目安です。10回のうち8回くらいはこの範囲に入ります。</li>
+          </ul>
+
+          <h3>見るときの注意</h3>
+          <ul>
+            <li>ボーダーはユーザーの投稿で集計されるため、<b>直近数日は値がまだ登録されていません</b>。グラフの白丸は、未登録のため推定した値です。</li>
+            <li>予測は目安です。イベントの開催や仕様変更など、急な変化は予測できません。</li>
+            <li>予測を利用したことによる結果について、責任は負いかねます。</li>
+          </ul>
+
+          <h3>データ提供</h3>
+          <p>ボーダーの数値は <a href="https://namazu-tools.net/border-guardian/" target="_blank" rel="noopener noreferrer">なまずつーるず ボーダー集計</a> に登録されたデータを利用しています。ボーダーを登録してくださっているみなさまのおかげで成り立っています。</p>
+          <p class="note">本サイトはIRIAM公式のものではありません。</p>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; はなだツール</p>
+  </footer>
+
+  <script src="assets/app.js"></script>
+  <!-- Cloudflare Web Analytics -->
+  <script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "359d5fcb2680499caeee96253cda6858"}'></script>
+  <!-- End Cloudflare Web Analytics -->
+</body>
+</html>

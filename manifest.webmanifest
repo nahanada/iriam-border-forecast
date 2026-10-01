@@ -1,0 +1,14 @@
+{
+  "name": "IRIAMボーダー予測",
+  "short_name": "ボーダー予測",
+  "description": "IRIAMのランクボーダーの今日から7日先までの予測を毎日更新。",
+  "lang": "ja",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2792c3",
+  "icons": [
+    { "src": "assets/Kame-Shiro-Noir.jpg", "sizes": "1600x1600", "type": "image/jpeg", "purpose": "any" }
+  ]
+}

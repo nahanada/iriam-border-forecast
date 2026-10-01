@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://nahanada.github.io/iriam-border-forecast/sitemap.xml

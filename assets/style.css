@@ -1,0 +1,338 @@
+:root {
+  --primary-color: #2792c3;
+  --primary-hover: #1d769f;
+  --primary-soft: rgba(39, 146, 195, 0.14);
+  --bg-color: #f4f6f9;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --muted: #666666;
+  --line: #e6e9ee;
+  --sat: #2b6cb0;
+  --sun: #d64545;
+  --warn-bg: #fff6e0;
+  --warn-text: #7a5300;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { overflow-x: hidden; }
+html, body { max-width: 100%; }
+body { overflow-x: clip; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text);
+  padding-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.6;
+}
+
+/* ---------- ヘッダー ---------- */
+header {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background-color: var(--primary-color);
+  color: #ffffff;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  z-index: 40;
+}
+.header-top { position: relative; padding: 10px 15px; }
+h1.title { font-size: 1.5rem; color: #ffffff; font-weight: bold; line-height: 1.5; }
+
+.menu-btn {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 40px;
+  border-radius: 20px;
+  transition: background-color 0.2s;
+}
+.menu-btn:hover { background-color: rgba(255, 255, 255, 0.2); }
+.menu-btn:focus-visible { outline: 2px solid #fff; outline-offset: 1px; }
+.arrow-icon {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border-top: 4px solid #ffffff;
+  border-right: 4px solid #ffffff;
+  transition: transform 0.25s ease, margin 0.25s ease;
+}
+/* 「く」の字の矢印: 閉じているとき下向き、開いているとき上向き */
+.arrow-icon.down { transform: rotate(135deg); margin-top: -5px; }
+header.menu-open .arrow-icon.down { transform: rotate(-45deg); margin-top: 5px; }
+
+/* ヘッダーの下に開く、画面幅いっぱい x 40px のメニュー帯 (ヘッダーより少し暗い色) */
+.menu-bar {
+  height: 0;
+  overflow: hidden;
+  background: #1f7fae;
+  visibility: hidden;
+  transition: height 0.25s cubic-bezier(0.2, 0.9, 0.3, 1), visibility 0s linear 0.25s;
+}
+header.menu-open .menu-bar { height: 40px; visibility: visible; transition-delay: 0s; }
+.menu-bar-inner { display: flex; justify-content: center; align-items: stretch; height: 40px; }
+.menu-item {
+  border: none;
+  background: transparent;
+  color: #ffffff;
+  font-size: 1.05rem;
+  font-weight: normal;
+  line-height: 40px;
+  padding: 0 14px;
+  flex: 1;
+  text-align: center;
+  cursor: pointer;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.2s ease, transform 0.25s cubic-bezier(0.2, 0.9, 0.3, 1), background-color 0.15s;
+}
+.menu-item.small { font-size: 0.92rem; }
+.menu-item:hover { background: rgba(255, 255, 255, 0.14); }
+.menu-item:focus-visible { outline: 2px solid #fff; outline-offset: -3px; }
+.menu-item.active { font-weight: bold; box-shadow: inset 0 -3px 0 #ffffff; }
+/* ボタンが順番に飛び出す */
+header.menu-open .menu-item { opacity: 1; transform: translateY(0); }
+header.menu-open .menu-item:nth-child(1) { transition-delay: 0.05s; }
+header.menu-open .menu-item:nth-child(2) { transition-delay: 0.10s; }
+header.menu-open .menu-item:nth-child(3) { transition-delay: 0.15s; }
+
+/* ---------- スライダー ---------- */
+.slider-wrapper {
+  width: 100%;
+  overflow: hidden;
+  transition: height 0.3s ease;
+}
+.slider-container {
+  display: flex;
+  align-items: flex-start;
+  width: 300%;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.slide-page {
+  width: calc(100% / 3);
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 0 10px 4px;
+}
+
+p.sub {
+  font-size: 0.9rem;
+  color: var(--muted);
+  text-align: center;
+  margin-top: 14px;
+  margin-bottom: 2px;
+}
+
+.notice {
+  max-width: 800px;
+  width: 100%;
+  background: var(--warn-bg);
+  color: var(--warn-text);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 0.85rem;
+}
+
+/* ---------- カード ---------- */
+.container {
+  background: var(--card-bg);
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  padding: 18px;
+  max-width: 800px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+#forecastCard { scroll-margin-top: 70px; }
+.card-title { font-size: 1.15rem; font-weight: bold; color: var(--primary-color); }
+
+/* ---------- ランク選択 ---------- */
+.picker { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.picker-label { font-size: 0.8rem; color: var(--muted); font-weight: bold; text-align: center; }
+.chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
+.chip {
+  min-width: 46px;
+  padding: 7px 12px;
+  border: 1px solid #cfd6de;
+  background: #fff;
+  color: var(--text);
+  font-size: 0.95rem;
+  font-weight: bold;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+}
+.chip:hover { border-color: var(--primary-color); }
+.chip.active { background: var(--primary-color); border-color: var(--primary-color); color: #fff; }
+.chips.steps .chip { min-width: 64px; }
+
+/* ランクボタン: 3列 x 5行 (右上S3 / 左下D) をランク色で表示 */
+.tier-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-auto-flow: dense;
+  gap: 8px;
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+}
+.tier-btn {
+  --c: #666;
+  --c-bg: #666;
+  padding: 4px 4px;
+  border: 2px solid var(--c);
+  background: #fff;
+  color: var(--c);
+  font-size: 1.05rem;
+  font-weight: bold;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: filter 0.15s, box-shadow 0.15s;
+}
+.tier-btn:hover { filter: brightness(0.97); box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12); }
+.tier-btn:focus-visible { outline: 3px solid rgba(39, 146, 195, 0.5); outline-offset: 2px; }
+.tier-btn.active { background: var(--c-bg); color: #fff; }
+.tier-btn[data-group="S"] {
+  --c: #ff3b5a;
+  --c-bg: linear-gradient(to bottom, #ff027e, #ff7534);
+  border: 2px solid transparent;
+  background: linear-gradient(#fff, #fff) padding-box, linear-gradient(to bottom, #ff027e, #ff7534) border-box;
+}
+.tier-btn[data-group="S"].active { background: var(--c-bg) border-box; color: #fff; }
+.tier-btn[data-group="A"]  { --c: #ff58bc; --c-bg: #ff58bc; }
+.tier-btn[data-group="B"]  { --c: #b251ff; --c-bg: #b251ff; }
+.tier-btn[data-group="C"]  { --c: #427eff; --c-bg: #427eff; }
+.tier-btn[data-group="D"]  { --c: #0db6ef; --c-bg: #0db6ef; }
+.tier-btn.active { text-shadow: 0 1px 1px rgba(0, 0, 0, 0.18); }
+.tier-btn.step-btn { --c: var(--primary-color); --c-bg: var(--primary-color); border-color: var(--primary-color); }
+.tier-btn.step-btn:not(.active) { color: var(--primary-color); }
+
+/* ---------- 数字カード ---------- */
+.stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.stat {
+  background: var(--bg-color);
+  border-radius: 10px;
+  padding: 8px 6px;
+  text-align: center;
+  min-width: 0;
+}
+.stat .label { font-size: 0.75rem; color: var(--muted); }
+.stat .value { font-size: 1.15rem; font-weight: bold; color: var(--text); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.stat .range { font-size: 0.7rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+/* ---------- グラフ ---------- */
+.chart { position: relative; width: 100%; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
+.chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+.chart .axis text { font-size: 11px; fill: #777; }
+.chart .grid line { stroke: var(--line); stroke-width: 1; }
+.chart .today-line { stroke: #f0a020; stroke-width: 1.5; stroke-dasharray: 4 3; }
+.chart .today-label { font-size: 11px; fill: #b87500; font-weight: bold; }
+.chart .band { fill: var(--primary-soft); }
+.chart .line-forecast { fill: none; stroke: var(--primary-color); stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
+.chart .line-est { fill: none; stroke: #aab3bd; stroke-width: 1.5; stroke-dasharray: 3 3; }
+.chart .line-actual { fill: none; stroke: #b9c3ce; stroke-width: 1.5; }
+.chart .dot-actual { fill: #333; }
+.chart .dot-est { fill: #fff; stroke: #8a95a1; stroke-width: 1.5; }
+.chart .dot-forecast { fill: var(--primary-color); stroke: #fff; stroke-width: 1.5; }
+.chart .guide { stroke: #99a4b0; stroke-width: 1; }
+.chart .tooltip {
+  position: absolute;
+  top: 0;
+  pointer-events: none;
+  background: rgba(30, 40, 50, 0.92);
+  color: #fff;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  padding: 6px 9px;
+  border-radius: 8px;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  z-index: 3;
+}
+.chart .tooltip b { font-size: 0.8rem; }
+
+.legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 0.75rem; color: var(--muted); justify-content: center; }
+.legend span { display: inline-flex; align-items: center; gap: 5px; }
+.lg { display: inline-block; }
+.lg-line { width: 18px; height: 3px; background: var(--primary-color); border-radius: 2px; }
+.lg-band { width: 18px; height: 10px; background: var(--primary-soft); border-radius: 2px; }
+.lg-dot { width: 9px; height: 9px; background: #333; border-radius: 50%; }
+.lg-est { width: 9px; height: 9px; background: #fff; border: 1.5px solid #8a95a1; border-radius: 50%; }
+
+/* ---------- テーブル ---------- */
+.table-scroll { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.data-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; font-variant-numeric: tabular-nums; }
+.data-table th, .data-table td { padding: 7px 8px; text-align: right; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.data-table th { background: var(--bg-color); color: var(--muted); font-weight: bold; font-size: 0.75rem; }
+.data-table th:first-child, .data-table td:first-child { text-align: left; }
+.data-table td.sat, .data-table th.sat { color: var(--sat); }
+.data-table td.sun, .data-table th.sun { color: var(--sun); }
+.data-table td.mon, .data-table th.mon { background: #fff8e8; }
+.data-table td.range { color: var(--muted); font-size: 0.78rem; }
+.data-table td.good { color: #1a7f4b; }
+.data-table td.bad { color: var(--sun); }
+.data-table td.na { color: #aaa; }
+.data-table tr.today td, .data-table tr.today th { font-weight: bold; }
+.data-table.matrix th:first-child, .data-table.matrix td:first-child {
+  position: sticky; left: 0; background: #fff; font-weight: bold; z-index: 1;
+}
+.data-table.matrix th:first-child { background: var(--bg-color); }
+.data-table.matrix tbody tr { cursor: pointer; }
+.data-table.matrix tbody tr:hover td { background: #f7fafc; }
+.data-table.matrix tbody tr.selected td { background: var(--primary-soft); }
+.data-table.matrix tbody tr.selected td:first-child { background: #d7ebf5; color: var(--primary-hover); }
+.data-table tbody tr[data-step].selected td:first-child { color: var(--text); }
+
+.data-table.matrix td:first-child .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 6px; vertical-align: 0; }
+
+.note { font-size: 0.8rem; color: var(--muted); text-align: center; }
+.note.left { text-align: center; }
+
+/* ---------- このサイトについて ---------- */
+.about { gap: 10px; }
+.about h3 { font-size: 0.95rem; margin-top: 8px; padding-left: 8px; border-left: 4px solid var(--primary-color); }
+.about ul { padding-left: 1.3em; display: flex; flex-direction: column; gap: 5px; font-size: 0.9rem; }
+.about p { font-size: 0.9rem; }
+.about a { color: var(--primary-color); font-weight: bold; }
+.about .note { text-align: left; }
+.meta { display: grid; grid-template-columns: max-content 1fr; gap: 4px 14px; font-size: 0.85rem; }
+.meta dt { color: var(--muted); }
+.meta dd { font-variant-numeric: tabular-nums; }
+
+footer { margin-top: 26px; font-size: 0.8rem; color: #888; text-align: center; }
+
+/* ---------- 小さい画面 ---------- */
+@media (max-width: 480px) {
+  h1.title { font-size: 1.25rem; }
+  .menu-panel { max-width: none; border-radius: 0 0 14px 14px; }
+  .container { padding: 14px; }
+  .stat .value { font-size: 1rem; }
+  .data-table { font-size: 0.8rem; }
+  .data-table th, .data-table td { padding: 6px 6px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slider-container, .slider-wrapper { transition: none; }
+}
+
+.data-table.transposed th:first-child, .data-table.transposed td:first-child { text-align: left; white-space: nowrap; }
+.data-table.transposed tbody td:first-child { color: #2792c3; }
